@@ -15,53 +15,96 @@ class _DialogFormState extends State<DialogForm> {
   NoteController get _read => context.read<NoteController>();
   NoteList? get _readmodel => context.read<NoteList>();
   NoteController get _watch => context.watch<NoteController>();
-
+  final _idText = TextEditingController();
   final _titleText = TextEditingController();
   final _DescriptionText = TextEditingController();
 
+  late String id = _idText.text;
   late String title = _titleText.text;
   late String description = _DescriptionText.text;
-
   @override
   Widget build(BuildContext context) {
-
-
     return AlertDialog(
-        title: Text('Add'),
-        content: SingleChildScrollView(
-          child: Column(
-            children: [
-              TextField(
-                controller: _titleText,
-                decoration: InputDecoration(
+      backgroundColor: (_read.isBlue == true) ? Colors.black : Colors.white,
+      title: Text(
+        'Add',
+        style: TextStyle(
+            color: (_read.isBlue == true) ? Colors.white : Colors.black),
+      ),
+      content: SingleChildScrollView(
+        child: Column(
+          children: [
+            TextFormField(
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "nhập đủ nào!";
+                }
+              },
+              controller: _titleText,
+              style: TextStyle(
+                  color: (_read.isBlue == true) ? Colors.white : Colors.black),
+              decoration: InputDecoration(
                   labelText: 'Title',
                   hintText: 'Title',
-                ),
-              ),
-              TextField(
-                controller: _DescriptionText,
-                decoration: InputDecoration(
+                  labelStyle: TextStyle(
+                      color:
+                          (_read.isBlue == true) ? Colors.white : Colors.black),
+                  hintStyle: TextStyle(
+                      color:
+                          (_read.isBlue == true) ? Colors.white : Colors.black),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                        color: (_read.isBlue == true)
+                            ? Colors.white
+                            : Colors.black),
+                  )),
+            ),
+            TextFormField(
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "nhập đủ nào!";
+                }
+              },
+              controller: _DescriptionText,
+              style: TextStyle(
+                  color: (_read.isBlue == true) ? Colors.white : Colors.black),
+              decoration: InputDecoration(
                   labelText: 'Description',
                   hintText: 'Description',
-                ),
-              ),
-
-              SizedBox(
-                height: 15,
-              ),
-
-
-            ],
-          ),
+                  labelStyle: TextStyle(
+                      color:
+                          (_read.isBlue == true) ? Colors.white : Colors.black),
+                  hintStyle: TextStyle(
+                      color:
+                          (_read.isBlue == true) ? Colors.white : Colors.black),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                        color: (_read.isBlue == true)
+                            ? Colors.white
+                            : Colors.black),
+                  )),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+          ],
         ),
-        actions: [
-          RaisedButton(
+      ),
+      actions: [
+        Center(
+          child: RaisedButton(
             onPressed: () {
-              _read.addItem(title, description);
-              Navigator.pop(context);
+              if (_titleText.text.isEmpty|| _DescriptionText.text.isEmpty){
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('hãy nhập đủ thông tin !')));
+              }else{
+                _read.addItem(title, description);
+                Navigator.pop(context);
+              }
+
             },
             child: Text('Add'),
-          )
+          ),
+        )
       ],
     );
   }
